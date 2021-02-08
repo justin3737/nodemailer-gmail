@@ -1,24 +1,27 @@
 var express = require('express');
 var nodemailer = require('nodemailer')
 var router = express.Router();
-
-router.get('/', function(req, res) {
-    res.render('contact');
+var csrf = require('csurf');
+var csrfProtection = csrf({cookie: true})
+require('dotenv').config()
+router.get('/', csrfProtection, function(req, res) {
+    res.render('contact', { csrfToken: req.csrfToken() });
 });
 router.get('/review', function(req, res) {
     res.render('contactReview');
 });
-router.post('/post', function(req, res) {
+router.post('/post', csrfProtection, function(req, res) {
     var data = req.body;
     console.log(data)
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           type: 'oauth2',
-          user: "cathayminiapp@gmail.com",
-          clientId: "650738593509-7u7u78ap1v82qugfa50ggrhbf94fkdsq.apps.googleusercontent.com",
-          clientSecret: "po1Nk3TBRAUAcMMbmBZZtbZ7",
-          refreshToken: "1//043wSu2tITesxCgYIARAAGAQSNwF-L9IrhDMBogvWFkYDzeErSKbOeMAJuuRz3mFEU-0_Bvof0jEnoYORcHhznoO0aOagsbDDQks",
+          user: process.env.GMAIL_USER,
+          clientId: process.env.GMAIL_CLIENT_ID,
+          clientSecret: process.env.GMAIL_SECRET,
+          refreshToken: process.env.GMAIL_REFLASH_TOKEN,
+          accessToken: process.env.GMAIL_ACCESS_TOKEN
         }
       });
 

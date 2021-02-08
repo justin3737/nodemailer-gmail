@@ -15,7 +15,6 @@
     "express": "~4.13.1",
     "express-session": "^1.15.6",
     "express-validator": "^4.2.1",
-    "googleapis": "^67.0.0",
     "morgan": "~1.6.1",
     "nodemailer": "^4.3.1",
     "path": "^0.12.7",
